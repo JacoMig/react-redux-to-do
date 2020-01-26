@@ -35,3 +35,32 @@
     transform: rotate(360deg);
   }
 }
+
+ul {
+  list-style: none;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item:before{
+  content: '\10066';
+  display: inline-block;
+  width: 40px;
+  font-size: 28px; 
+}
+
+.item.select:before{
+  content: '\2713';
+}
+
+.filterlinks {
+  display: flex;
+  justify-content: space-around;
+}
+
+.filterlinks a { 
+  color: #61dafb;
+  text-decoration: none;
+}

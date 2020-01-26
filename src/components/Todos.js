@@ -1,13 +1,34 @@
 import React from 'react'
-import Todo from './Todo'
+import { actionConsts } from '../redux/constants'
+import { connect } from 'react-redux'
+import {selectToDo} from '../redux/actions'
 
+const visibilityFilter = (todos, filter) => {
+    switch(filter){
+        case actionConsts.SHOW_ALL:
+            return todos
+        case actionConsts.SHOW_COMPLETED:
+            return todos.filter(todo => todo.completed)
+        case actionConsts.SHOW_UNCOMPLETED:
+            return todos.filter(todo => !todo.completed)
+        default:
+            return todos
+    }
+}
 
-export const Todos = ({todos}) => {
+const Todos = ({todos, dispatch}) => {
+    
+    const toggleItem = (todoId) => {
+        dispatch(selectToDo(todoId))
+    }
+   
     return (
         <ul>
             {todos.length > 0 &&
                 todos.map((todo, i) => (
-                    <Todo key={i} todo={todo} index={i} />
+                    <li key={i} className={`item ${todo.completed ? 'select' : ''}`} id={todo.id} onClick={() => toggleItem(todo.id)}>
+                        {todo.body}
+                    </li>
                 ))
             }
         </ul>
@@ -15,3 +36,9 @@ export const Todos = ({todos}) => {
 }
 
 
+const mapStateToProps = state => ({
+    todos: visibilityFilter(state.todos,state.visibilityFilter),
+    
+})
+
+export default connect(mapStateToProps, null)(Todos)
